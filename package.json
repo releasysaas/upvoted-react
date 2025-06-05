@@ -4,6 +4,7 @@
   "description": "React client for Upvoted API",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": "Steve Means - Releasy CORP",
   "scripts": {
     "build": "tsc",
     "test": "jest",
@@ -14,7 +15,6 @@
     "api",
     "client"
   ],
-  "author": "",
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^29.5.3",
