@@ -1,0 +1,668 @@
+{
+    "components": {
+        "responses": {
+            "forbidden": {
+                "content": {
+                    "application/json": {
+                        "example": {
+                            "errors": {
+                                "details": "Forbidden"
+                            }
+                        },
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                },
+                "description": "Forbidden"
+            },
+            "no_content": {
+                "description": "No Content"
+            },
+            "unauthorised": {
+                "content": {
+                    "application/json": {
+                        "example": {
+                            "errors": {
+                                "details": "Unauthorised"
+                            }
+                        },
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                },
+                "description": "Unauthorised"
+            },
+            "unprocessable_entity": {
+                "content": {
+                    "application/json": {
+                        "example": {
+                            "errors": {
+                                "details": "Unprocessable Entity"
+                            }
+                        },
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                },
+                "description": "Unprocessable Entity"
+            }
+        },
+        "schemas": {
+            "Comment": {
+                "description": "Feature comment",
+                "properties": {
+                    "contributor": {
+                        "$ref": "#/components/schemas/Contributor"
+                    },
+                    "inserted_at": {
+                        "description": "Inserted At",
+                        "type": "datetime"
+                    },
+                    "message": {
+                        "description": "Message",
+                        "type": "string"
+                    }
+                },
+                "title": "Comment",
+                "type": "object"
+            },
+            "CommentCreate": {
+                "description": "Request body for commenting a feature",
+                "example": {
+                    "contributor": {
+                        "email": "john.doe@example.com",
+                        "name": "John Doe"
+                    },
+                    "message": "Really nice feature!"
+                },
+                "properties": {
+                    "contributor": {
+                        "description": "Upvoter",
+                        "type": "Elixir.UpvotedApi.Schemas.Contributor"
+                    },
+                    "messsage": {
+                        "description": "Message",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "contributor"
+                ],
+                "title": "CommentCreate",
+                "type": "object"
+            },
+            "Contributor": {
+                "description": "Current object author",
+                "properties": {
+                    "email": {
+                        "description": "Email of the submitter",
+                        "format": "email",
+                        "type": "string"
+                    },
+                    "name": {
+                        "description": "Name of the submitter",
+                        "type": "string"
+                    }
+                },
+                "title": "Contributor",
+                "type": "object"
+            },
+            "FeatureCreate": {
+                "description": "Request body for submitting a new feature",
+                "example": {
+                    "contributor": {
+                        "email": "john.doe@example.com",
+                        "name": "John Doe"
+                    },
+                    "description": "Every time a feature is created, notifiy admins also with an email",
+                    "title": "Add email notifications to users"
+                },
+                "properties": {
+                    "contributor": {
+                        "description": "Feature proposal author",
+                        "type": "Elixir.UpvotedApi.Schemas.Contributor"
+                    },
+                    "description": {
+                        "description": "Description",
+                        "type": "string"
+                    },
+                    "title": {
+                        "description": "Title",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "title",
+                    "description",
+                    "contributor"
+                ],
+                "title": "FeatureCreate",
+                "type": "object"
+            },
+            "FeatureRecords": {
+                "description": "Response body for feature list",
+                "properties": {
+                    "records": {
+                        "items": {
+                            "$ref": "#/components/schemas/IndexFeature"
+                        },
+                        "type": "array"
+                    }
+                },
+                "required": [
+                    "records"
+                ],
+                "title": "FeatureRecords",
+                "type": "object"
+            },
+            "IndexFeature": {
+                "description": "Response body for feature",
+                "example": {
+                    "comments_count": 0,
+                    "contributor": {
+                        "email": "john.doe@example.com",
+                        "name": "John Doe"
+                    },
+                    "id": "14e47888-028a-498a-9ba0-8d281f236cd2",
+                    "inserted_at": "2025-01-09T14:29:14Z",
+                    "private_upvotes_count": 0,
+                    "public_upvotes_count": 0,
+                    "status": "pending",
+                    "title": "Add email notifications to users"
+                },
+                "properties": {
+                    "comments_count": {
+                        "description": "Comments Count",
+                        "type": "int"
+                    },
+                    "contributor": {
+                        "$ref": "#/components/schemas/Contributor"
+                    },
+                    "id": {
+                        "description": "Id",
+                        "type": "string"
+                    },
+                    "inserted_at": {
+                        "description": "Inserted At",
+                        "type": "datetime"
+                    },
+                    "private_upvotes_count": {
+                        "description": "Private Upvotes Count",
+                        "type": "int"
+                    },
+                    "public_upvotes_count": {
+                        "description": "Public Upvotes Count",
+                        "type": "int"
+                    },
+                    "status": {
+                        "description": "Status",
+                        "type": "string"
+                    },
+                    "title": {
+                        "description": "Title",
+                        "type": "string"
+                    }
+                },
+                "title": "IndexFeature",
+                "type": "object"
+            },
+            "ShowFeature": {
+                "description": "Response body for feature",
+                "example": {
+                    "comments": [
+                        {
+                            "contributor": {
+                                "email": "steve@releasy.xyz",
+                                "name": "Steve"
+                            },
+                            "inserted_at": "2025-01-09T14:30:02Z",
+                            "message": "Good idea!"
+                        }
+                    ],
+                    "comments_count": 1,
+                    "contributor": {
+                        "email": "john.doe@example.com",
+                        "name": "John Doe"
+                    },
+                    "description": "Every time a feature is created, notifiy admins also with an email",
+                    "id": "14e47888-028a-498a-9ba0-8d281f236cd2",
+                    "inserted_at": "2025-01-09T14:29:14Z",
+                    "private_upvotes_count": 1,
+                    "public_upvotes_count": 0,
+                    "status": "pending",
+                    "title": "Add email notifications to users",
+                    "votes": [
+                        {
+                            "contributor": {
+                                "email": "steve@releasy.xyz",
+                                "name": "Steve"
+                            },
+                            "inserted_at": "2025-01-09T14:29:46Z",
+                            "public": false
+                        }
+                    ]
+                },
+                "properties": {
+                    "comments": {
+                        "items": {
+                            "$ref": "#/components/schemas/Comment"
+                        },
+                        "type": "array"
+                    },
+                    "comments_count": {
+                        "description": "Comments Count",
+                        "type": "int"
+                    },
+                    "contributor": {
+                        "$ref": "#/components/schemas/Contributor"
+                    },
+                    "description": {
+                        "description": "Email address",
+                        "format": "email",
+                        "type": "string"
+                    },
+                    "id": {
+                        "description": "Id",
+                        "type": "string"
+                    },
+                    "inserted_at": {
+                        "description": "Inserted At",
+                        "type": "datetime"
+                    },
+                    "private_upvotes_count": {
+                        "description": "Private Upvotes Count",
+                        "type": "int"
+                    },
+                    "public_upvotes_count": {
+                        "description": "Public Upvotes Count",
+                        "type": "int"
+                    },
+                    "status": {
+                        "description": "Status",
+                        "type": "string"
+                    },
+                    "title": {
+                        "description": "Title",
+                        "type": "string"
+                    },
+                    "votes": {
+                        "items": {
+                            "$ref": "#/components/schemas/Vote"
+                        },
+                        "type": "array"
+                    }
+                },
+                "title": "ShowFeature",
+                "type": "object"
+            },
+            "StatusRecords": {
+                "description": "Response body for status list",
+                "example": {
+                    "records": [
+                        {
+                            "is_final": false,
+                            "is_initial": true,
+                            "name": "Pending",
+                            "order": 0
+                        }
+                    ]
+                },
+                "properties": {
+                    "records": {
+                        "items": {
+                            "properties": {
+                                "is_final": {
+                                    "description": "Is final",
+                                    "type": "bool"
+                                },
+                                "is_initial": {
+                                    "description": "Is initial",
+                                    "type": "bool"
+                                },
+                                "name": {
+                                    "description": "Name",
+                                    "type": "string"
+                                },
+                                "order": {
+                                    "description": "Order",
+                                    "type": "int"
+                                }
+                            },
+                            "required": [
+                                "name",
+                                "order",
+                                "is_final",
+                                "is_initial"
+                            ],
+                            "type": "object"
+                        },
+                        "type": "array"
+                    }
+                },
+                "required": [
+                    "records"
+                ],
+                "title": "StatusRecords",
+                "type": "object"
+            },
+            "UpvoteCreate": {
+                "description": "Request body for upvoting feature",
+                "example": {
+                    "contributor": {
+                        "email": "carl.smith@example.com",
+                        "name": "Carl Smith"
+                    }
+                },
+                "properties": {
+                    "contributor": {
+                        "description": "Upvoter",
+                        "type": "Elixir.UpvotedApi.Schemas.Contributor"
+                    }
+                },
+                "required": [
+                    "contributor"
+                ],
+                "title": "UpvoteCreate",
+                "type": "object"
+            },
+            "Vote": {
+                "description": "Feature upvote",
+                "properties": {
+                    "contributor": {
+                        "$ref": "#/components/schemas/Contributor"
+                    },
+                    "inserted_at": {
+                        "description": "Inserted At",
+                        "type": "datetime"
+                    },
+                    "public": {
+                        "description": "Public",
+                        "type": "boolean"
+                    }
+                },
+                "title": "Vote",
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "authorization": {
+                "description": "You must generate an API token first for a given board",
+                "scheme": "bearer",
+                "type": "http"
+            }
+        }
+    },
+    "info": {
+        "title": "Upvoted API",
+        "version": "1.0"
+    },
+    "openapi": "3.0.0",
+    "paths": {
+        "/api/boards/features": {
+            "get": {
+                "callbacks": {},
+                "description": "List all features for this board",
+                "operationId": "UpvotedApi.FeaturesController.index",
+                "parameters": [
+                    {
+                        "description": "pending, approved, in_progress, done, rejected, published",
+                        "in": "query",
+                        "name": "status",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FeatureRecords"
+                                }
+                            }
+                        },
+                        "description": "Features"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorised"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
+                "summary": "List all features for this board",
+                "tags": [
+                    "feature"
+                ]
+            },
+            "post": {
+                "callbacks": {},
+                "description": "Create a new feature",
+                "operationId": "UpvotedApi.FeaturesController.create",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FeatureCreate"
+                            }
+                        }
+                    },
+                    "description": "Feature attributes",
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/IndexFeature"
+                                }
+                            }
+                        },
+                        "description": "Created feature"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorised"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/unprocessable_entity"
+                    }
+                },
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
+                "summary": "Create a new feature",
+                "tags": [
+                    "feature"
+                ]
+            }
+        },
+        "/api/boards/features/{id}": {
+            "get": {
+                "callbacks": {},
+                "description": "Show specific feature for this board",
+                "operationId": "UpvotedApi.FeaturesController.show",
+                "parameters": [
+                    {
+                        "description": "The id of the feature to load",
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ShowFeature"
+                                }
+                            }
+                        },
+                        "description": "Feature"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorised"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
+                "summary": "Show specific feature for this board",
+                "tags": [
+                    "feature"
+                ]
+            }
+        },
+        "/api/boards/features/{id}/comments": {
+            "post": {
+                "callbacks": {},
+                "description": "Add a comment to a feature",
+                "operationId": "UpvotedApi.FeaturesController.comment",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CommentCreate"
+                            }
+                        }
+                    },
+                    "description": "Comment attributes",
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ShowFeature"
+                                }
+                            }
+                        },
+                        "description": "Commented feature"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorised"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/unprocessable_entity"
+                    }
+                },
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
+                "summary": "Add a comment to a feature",
+                "tags": [
+                    "feature"
+                ]
+            }
+        },
+        "/api/boards/features/{id}/upvote": {
+            "post": {
+                "callbacks": {},
+                "description": "Upvote a feature",
+                "operationId": "UpvotedApi.FeaturesController.upvote",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpvoteCreate"
+                            }
+                        }
+                    },
+                    "description": "Upvote attributes",
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ShowFeature"
+                                }
+                            }
+                        },
+                        "description": "Upvoted feature"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorised"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/unprocessable_entity"
+                    }
+                },
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
+                "summary": "Upvote a feature",
+                "tags": [
+                    "feature"
+                ]
+            }
+        },
+        "/api/boards/statuses": {
+            "get": {
+                "callbacks": {},
+                "description": "Get statuses for current board",
+                "operationId": "UpvotedApi.FeaturesController.statuses",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusRecords"
+                                }
+                            }
+                        },
+                        "description": "Statuses"
+                    }
+                },
+                "security": [
+                    {
+                        "authorization": []
+                    }
+                ],
+                "summary": "Get statuses for current board",
+                "tags": [
+                    "feature"
+                ]
+            }
+        }
+    },
+    "security": [],
+    "servers": [
+        {
+            "url": "https://upvoted.io",
+            "variables": {}
+        }
+    ],
+    "tags": []
+}
